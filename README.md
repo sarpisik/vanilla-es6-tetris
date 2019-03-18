@@ -1,6 +1,6 @@
 # ReactNative Theme Boilerplate
 
-This is a starter boilerplate of my vanilla(Css, JavaScript) projects .
+This is a starter boilerplate for my vanilla(Css, JavaScript) projects .
 
 ## Getting Started
 
