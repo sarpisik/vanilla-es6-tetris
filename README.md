@@ -1,4 +1,4 @@
-# ReactNative Theme Boilerplate
+# Vanilla Boilerplate
 
 This is a starter boilerplate for my vanilla(Css, JavaScript) projects .
 
