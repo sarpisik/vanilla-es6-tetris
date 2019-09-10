@@ -34,6 +34,7 @@ body {
   overflow: hidden;
   max-width: 48rem;
   margin: auto;
+  position: relative;
 }
 
 noscript p {
@@ -127,42 +128,62 @@ canvas {
 }
 
 @media only screen and (orientation: landscape) {
-  body {
-    flex-direction: row;
-    justify-content: space-around;
-  }
-
   .boardsContainer {
-    flex-direction: column;
-    height: calc(100% - 2vh);
-    justify-content: flex-start;
-  }
-
-  .boardsContainer > div {
-    padding: 1rem;
+    font-size: 2.5vh;
   }
 
   .tetrisContainer {
-    height: 90vh;
-    max-height: 48rem;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-
-  .buttonsContainer {
-    justify-content: flex-start;
+    height: 70vh;
   }
 
   .buttonsContainer .row {
-    margin-top: 5vh;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    justify-content: center;
   }
 
-  .controllersContainer {
-    order: 2;
-    margin-top: 20vh;
+  .row:first-child {
+    top: 30vh;
+  }
+
+  .row:last-child {
+    bottom: 40vh;
+  }
+
+  .row > button:first-child {
+    margin-right: 30vh;
+  }
+
+  .row > button:last-child {
+    margin-left: 30vh;
+  }
+
+  .row > button > img {
+    margin: 0;
+  }
+}
+
+@media only screen and (min-height: 1000px) {
+  .tetrisContainer {
+    max-height: 700px;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+  }
+
+  .tool {
+    height: 80px;
+  }
+
+  .row > button:first-child {
+    margin-right: 20rem;
+  }
+
+  .row > button:last-child {
+    margin-left: 20rem;
   }
 
   .startContainer {
-    order: 1;
+    margin-bottom: 10vh;
   }
 }

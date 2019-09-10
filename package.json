@@ -9,7 +9,7 @@
     "build": "webpack --config webpack.prod.js",
     "server": "http-server dist",
     "demo": "npm run build && npm run server",
-    "deploy": "npm run build && gh-pages -d build"
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "keywords": [
     "javascript",

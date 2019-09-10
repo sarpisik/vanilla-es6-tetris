@@ -8,13 +8,13 @@ export default class Arena {
     this.matrix = this.createMatrix();
     this.colors = [
       null,
-      '#FF0D72',
-      '#0DC2FF',
-      '#0DFF72',
-      '#F538FF',
-      '#FF8E0D',
-      '#FFE138',
-      '#3877FF'
+      '255, 13, 114',
+      '13, 194, 255',
+      '13, 255, 114',
+      '245, 56, 255',
+      '255, 142, 13',
+      '255, 225, 56',
+      '56, 119, 255'
     ];
   }
 
@@ -39,8 +39,15 @@ export default class Arena {
     matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          self.context.fillStyle = this.colors[value];
+          const color = this.colors[value];
+          self.context.fillStyle = `rgba(${color}, 0.8)`;
           self.context.fillRect(x + offset.x, y + offset.y, 1, 1);
+          let gradient = self.context.createLinearGradient(0, 0, 1, 1);
+          gradient.addColorStop('0', `rgba(${color}, 0.3)`);
+          gradient.addColorStop('1.0', `rgba(${color}, 1)`);
+          self.context.strokeStyle = gradient;
+          self.context.lineWidth = 0.1;
+          self.context.strokeRect(x + offset.x, y + offset.y, 1, 1);
         }
       });
     });
