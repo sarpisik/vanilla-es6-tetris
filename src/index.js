@@ -1,8 +1,8 @@
-import app from './app';
+import Game from './app';
 import 'normalize.css';
 import './index.css';
 
-app();
+new Game();
 
 if (process.env.NODE_ENV !== 'production') {
   console.log('Looks like we are in development mode!');

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Vanilla Boilerplate</title>
+    <title>Tetris</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, user-scalable=no"
@@ -17,12 +17,62 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="Junior frontend developer portfolio" />
   </head>
-  <body>
+  <body class="flex">
     <noscript>
       <p>You need to enable JavaScript to run this app.</p>
     </noscript>
 
-    <div id="score"></div>
-    <canvas id="tetris" width="240" height="400" />
+    <div class="boardsContainer tool flex">
+      <div>
+        <p>Score</p>
+        <hr />
+        <p id="score">0</p>
+      </div>
+      <div>
+        <p>Level</p>
+        <hr />
+        <p id="level">0</p>
+      </div>
+      <div>
+        <p>Rows</p>
+        <hr />
+        <p id="clearedRows">0</p>
+      </div>
+    </div>
+    <div class="tetrisContainer">
+      <canvas id="tetris" width="240" height="400"></canvas>
+    </div>
+    <div class="buttonsContainer flex">
+      <div class="controllersContainer flex">
+        <div class="row tool flex">
+          <button id="moveLeft">
+            <img
+              class="tool"
+              src="../assets/images/arrow.png"
+              alt="left arrow"
+            />
+          </button>
+          <button id="moveRight">
+            <img
+              class="tool"
+              src="../assets/images/arrow.png"
+              alt="right arrow"
+            />
+          </button>
+        </div>
+        <div class="row tool flex">
+          <button id="dash">
+            <img class="tool" src="../assets/images/dash.png" alt="dash" />
+          </button>
+          <button id="rotate">
+            <img class="tool" src="../assets/images/rotate.png" alt="rotate" />
+          </button>
+        </div>
+      </div>
+
+      <div class="startContainer">
+        <button id="start" class="tool">Start Game</button>
+      </div>
+    </div>
   </body>
 </html>
