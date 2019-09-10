@@ -1,8 +1,8 @@
 {
-  "name": "vanilla-boilerplate",
+  "name": "Tetris",
   "version": "1.0.0",
   "private": true,
-  "description": "This is a starter boilerplate for vanilla css / javascript projects",
+  "description": "Tetris game app built on vanilla es6",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js",
@@ -16,9 +16,9 @@
   "author": "Sarp IŞIK",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sarpisik/vanilla-boilerplate/issues"
+    "url": "https://github.com/sarpisik/vanilla-es6-tetris/issues"
   },
-  "homepage": "https://github.com/sarpisik/vanilla-boilerplate#readme",
+  "homepage": "https://github.com/sarpisik/vanilla-es6-tetris#readme",
   "dependencies": {
     "normalize.css": "^8.0.1"
   },
