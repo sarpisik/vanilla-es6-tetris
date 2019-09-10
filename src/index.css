@@ -20,6 +20,11 @@
 
 body {
   font-family: 'Ubuntu';
+  background: #202028;
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 2em;
+  text-align: center;
 }
 
 noscript p {
@@ -31,7 +36,7 @@ noscript p {
   background: #fff;
 }
 
-div.intro {
-  background-color: #222;
-  color: #fff;
+canvas {
+  border: solid 0.2em #fff;
+  height: 90vh;
 }
