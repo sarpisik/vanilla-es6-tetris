@@ -161,16 +161,10 @@ export default class Game {
   };
 
   handleMoveOnClick = ({ target: { alt } }) => {
-    switch (alt) {
-      case 'left arrow':
-        return this.playerMove(-1);
-      case 'right arrow':
-        return this.playerMove(1);
-      case 'dash':
-        return this.dropPlayer();
-      default:
-        return this.playerRotate(1);
-    }
+    if (alt === 'left arrow') return this.playerMove(-1);
+    if (alt === 'right arrow') return this.playerMove(1);
+    if (alt === 'dash') return this.dropPlayer();
+    if (alt === 'rotate') return this.playerRotate(1);
   };
 
   playerMove = offset => {

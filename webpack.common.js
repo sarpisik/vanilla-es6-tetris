@@ -1,6 +1,7 @@
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const WebpackPwaManifest = require('webpack-pwa-manifest')
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -31,14 +32,15 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Single Landing Page WebApp',
+      title: 'Tetris',
       template: 'src/index.html'
     }),
     new WebpackPwaManifest({
-      name: 'Sarp IŞIK Portfolio',
-      short_name: 'Portfolio',
-      description: 'Junior Frontend Developer Portfolio',
-      background_color: '#ffffff'
-    })
+      name: 'Tetris Game App',
+      short_name: 'Tetris',
+      description: 'Tetris game application built on javascript by Sarp IŞIK',
+      background_color: '#145fff'
+    }),
+    new CopyPlugin([{ from: './assets/favicon', to: 'favicon/' }])
   ]
-}
+};
