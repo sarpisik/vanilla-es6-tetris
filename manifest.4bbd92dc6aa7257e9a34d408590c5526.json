@@ -1,9 +1,0 @@
-{
-  "name": "Sarp IŞIK Portfolio",
-  "short_name": "Portfolio",
-  "orientation": "portrait",
-  "display": "standalone",
-  "start_url": ".",
-  "description": "Junior Frontend Developer Portfolio",
-  "background_color": "#ffffff"
-}

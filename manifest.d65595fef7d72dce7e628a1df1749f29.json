@@ -1,0 +1,9 @@
+{
+  "name": "Tetris Game App",
+  "short_name": "Tetris",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "description": "Tetris game application built on javascript by Sarp IŞIK",
+  "background_color": "#145fff"
+}
