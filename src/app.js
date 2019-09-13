@@ -16,9 +16,10 @@ export default class Game {
     this.dashButton = new Button('#dash', this.handleMoveOnClick);
     this.rotateButton = new Button('#rotate', this.handleMoveOnClick);
 
-    // Event handlers
+    // Event handler
     document.addEventListener('keydown', this.handleKeyDown);
 
+    // Initialize game
     this.initialGameSettings();
     this.updateBoard();
   }
@@ -32,7 +33,12 @@ export default class Game {
   };
 
   handleStartButtonClick = ({ target: { innerText } }) => {
-    if (innerText === 'Reset Game') return this.resetGame();
+    if (innerText === 'Reset Game') {
+      if (window.confirm('Do you want to restart the game?'))
+        return this.resetGame();
+
+      return;
+    }
     this.startButton.updateContent('Reset Game');
     this.renderGame();
   };
