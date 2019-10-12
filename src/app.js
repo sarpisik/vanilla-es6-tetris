@@ -2,24 +2,44 @@ import Player from './components/player';
 import Display from './components/display';
 import Arena from './components/arena';
 import Button from './components/button';
+import playButtonImage from '../assets/images/play-button.png';
+import pauseButtonImage from '../assets/images/pause.png';
+import NextItem from './components/nextItem';
 
 export default class Game {
   constructor() {
+    // Item colors.
+    this.colors = [
+      null,
+      '255, 13, 114',
+      '13, 194, 255',
+      '13, 255, 114',
+      '245, 56, 255',
+      '255, 142, 13',
+      '255, 225, 56',
+      '56, 119, 255'
+    ];
+
     // DOM elements
     this.scoreBoard = new Display('#score');
-    this.levelBoard = new Display('#level');
     this.clearedRowsBoard = new Display('#clearedRows');
-    this.arena = new Arena(12, 20);
-    this.startButton = new Button('#start', this.handleStartButtonClick);
+    this.nextItemBoard = new NextItem(this.colors);
+    this.startButton = new Button('#control', this.handleStartButtonClick);
+    this.restartButton = new Button('#restart', this.resetGame);
+    this.controlIcon = document.querySelector('.control-icon');
     this.moveLeftButton = new Button('#moveLeft', this.handleMoveOnClick);
     this.moveRightButton = new Button('#moveRight', this.handleMoveOnClick);
     this.dashButton = new Button('#dash', this.handleMoveOnClick);
     this.rotateButton = new Button('#rotate', this.handleMoveOnClick);
 
+    // Set arena size.
+    this.arena = new Arena(12, 20, this.colors);
+
     // Event handler
     document.addEventListener('keydown', this.handleKeyDown);
 
     // Initialize game
+    this.gameOver = true;
     this.initialGameSettings();
     this.updateBoard();
   }
@@ -32,29 +52,51 @@ export default class Game {
     this.player.reset(this.arena.matrix);
   };
 
-  handleStartButtonClick = ({ target: { innerText } }) => {
-    if (innerText === 'Reset Game') {
-      if (window.confirm('Do you want to restart the game?'))
-        return this.resetGame();
-
-      return;
+  handleStartButtonClick = ({ currentTarget: { dataset }, target }) => {
+    // If this is initial game or game is over, restart game.
+    if (this.gameOver) {
+      dataset.state = 'pause';
+      // Set background pause icon.
+      target.src = pauseButtonImage;
+      return this.renderGame();
     }
-    this.startButton.updateContent('Reset Game');
-    this.renderGame();
+
+    // If pause button clicked, play game.
+    // Else, pause game.
+    if (dataset.state === 'play') {
+      this.gamePause = false;
+      dataset.state = 'pause';
+      // Set background pause icon.
+      target.src = pauseButtonImage;
+      this.update();
+    } else {
+      this.gamePause = true;
+      dataset.state = 'play';
+      // Set background play icon.
+      target.src = playButtonImage;
+    }
   };
 
   renderGame = () => {
     this.gameOver = false;
+    this.gamePause = false;
+    // Initial game speed.
     this.dropInterval = 1000;
+    // Clear arena.
     this.arena.matrix.forEach(row => row.fill(0));
+    // Clear player score.
     this.player.clear();
     this.updateBoard();
+
+    this.nextItemBoard.drawNextItem(this.player.nextMatrix);
     this.update();
   };
 
   resetGame = () => {
     this.gameOver = true;
     this.initialGameSettings();
+    this.startButton.element.dataset.state = 'pause';
+    this.controlIcon.src = pauseButtonImage;
     this.renderGame();
   };
 
@@ -68,7 +110,9 @@ export default class Game {
 
     this.drawBoard();
 
-    this.gameOver || window.requestAnimationFrame(this.update);
+    this.gameOver ||
+      this.gamePause ||
+      window.requestAnimationFrame(this.update);
   };
 
   dropPlayer = () => {
@@ -88,6 +132,7 @@ export default class Game {
       // If any row cleared, update level.
       rowCount > 0 && this.updateLevel(rowCount, score);
 
+      this.nextItemBoard.drawNextItem(this.player.nextMatrix);
       this.updateBoard();
     }
 
@@ -129,12 +174,11 @@ export default class Game {
 
   onGameOver = () => {
     this.gameOver = true;
-    this.startButton.updateContent('Restart Game');
+    this.controlIcon.src = playButtonImage;
   };
 
   updateBoard = () => {
     this.scoreBoard.updateContent(this.player.score);
-    this.levelBoard.updateContent(this.player.level);
     this.clearedRowsBoard.updateContent(this.player.clearedRows);
   };
 
@@ -153,6 +197,9 @@ export default class Game {
   drawBoard = () => this.arena.draw(this.player);
 
   handleKeyDown = ({ keyCode }) => {
+    // If game paused, do not move item.
+    // Else, move item.
+    if (this.gamePause) return;
     if (keyCode === 37) {
       this.playerMove(-1);
     } else if (keyCode === 39) {
@@ -167,6 +214,9 @@ export default class Game {
   };
 
   handleMoveOnClick = ({ target: { alt } }) => {
+    // If game paused, do not move item.
+    // Else, move item.
+    if (this.gamePause) return;
     if (alt === 'left arrow') return this.playerMove(-1);
     if (alt === 'right arrow') return this.playerMove(1);
     if (alt === 'dash') return this.dropPlayer();

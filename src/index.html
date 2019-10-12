@@ -59,20 +59,30 @@
     </noscript>
 
     <div class="boardsContainer tool flex">
-      <div>
-        <p>Score</p>
-        <hr />
-        <p id="score">0</p>
+      <div class="board">
+        <p>Score: <span id="score">0</span></p>
+        <p>Rows: <span id="clearedRows">0</span></p>
       </div>
       <div>
-        <p>Level</p>
-        <hr />
-        <p id="level">0</p>
+        <button id="control" data-state="play">
+          <img
+            class="tool control-icon"
+            src="../assets/images/play-button.png"
+            alt="play button"
+          />
+        </button>
       </div>
       <div>
-        <p>Rows</p>
-        <hr />
-        <p id="clearedRows">0</p>
+        <button id="restart">
+          <img
+            class="tool control-icon"
+            src="../assets/images/restart.png"
+            alt="play button"
+          />
+        </button>
+      </div>
+      <div>
+        <div class="next-item"></div>
       </div>
     </div>
     <div class="tetrisContainer">
@@ -106,9 +116,9 @@
         </div>
       </div>
 
-      <div class="startContainer">
+      <!-- <div class="startContainer">
         <button id="start" class="tool">Start Game</button>
-      </div>
+      </div> -->
     </div>
   </body>
 </html>

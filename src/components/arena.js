@@ -1,21 +1,13 @@
 export default class Arena {
-  constructor(columns, rows) {
+  constructor(columns, rows, colors) {
     this.canvas = document.getElementById('tetris');
     this.context = this.canvas.getContext('2d');
+    // Size of the cells
     this.context.scale(20, 20);
     this.columns = columns;
     this.rows = rows;
     this.matrix = this.createMatrix();
-    this.colors = [
-      null,
-      '255, 13, 114',
-      '13, 194, 255',
-      '13, 255, 114',
-      '245, 56, 255',
-      '255, 142, 13',
-      '255, 225, 56',
-      '56, 119, 255'
-    ];
+    this.colors = colors;
   }
 
   createMatrix = () => {
@@ -29,7 +21,9 @@ export default class Arena {
   draw = player => {
     this.context.fillStyle = '#000';
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    // Draw arena.
     this.drawMatrix(this.matrix, { x: 0, y: 0 });
+    // Draw item.
     this.drawMatrix(player.matrix, player.pos);
   };
 

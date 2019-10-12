@@ -97,6 +97,19 @@ button:active {
   justify-content: space-around;
 }
 
+.next-item {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1px;
+  height: 40px;
+  width: 40px;
+  margin: auto;
+}
+
+.next-item > div {
+  background-color: #000;
+}
+
 /* Tetris */
 
 .tetrisContainer {
@@ -125,6 +138,10 @@ canvas {
   background-color: green;
   border-radius: 4px;
   margin: 2vh 0 0 0;
+}
+
+.control-icon {
+  height: 5vh;
 }
 
 @media only screen and (orientation: landscape) {
