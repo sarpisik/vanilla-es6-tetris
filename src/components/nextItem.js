@@ -1,3 +1,5 @@
+const BACKGROUND_COLOR = '32, 32, 40';
+
 export default class NextItem {
   constructor(colors) {
     this.element = document.querySelector('.next-item');
@@ -19,7 +21,7 @@ export default class NextItem {
         const boardCell = self.squares[y][x],
           // If current cell is item cell, change background.
           // Else, make black background.
-          backgroundColor = col > 0 ? self.colors[col] : '0,0,0';
+          backgroundColor = col > 0 ? self.colors[col] : BACKGROUND_COLOR;
         boardCell.changeBackgroundColor(backgroundColor);
       });
     });
@@ -51,5 +53,5 @@ function createSquares(parent) {
 }
 
 function setBackgroundBlack(row) {
-  row.forEach(square => square.changeBackgroundColor('0,0,0'));
+  row.forEach(square => square.changeBackgroundColor(BACKGROUND_COLOR));
 }

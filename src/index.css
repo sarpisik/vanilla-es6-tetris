@@ -107,13 +107,13 @@ button:active {
 }
 
 .next-item > div {
-  background-color: #000;
+  background-color: rgb(32, 32, 40);
 }
 
 /* Tetris */
 
 .tetrisContainer {
-  height: 55vh;
+  height: 65vh;
   margin-bottom: 2vh;
 }
 
