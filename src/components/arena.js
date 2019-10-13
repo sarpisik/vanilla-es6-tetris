@@ -8,6 +8,7 @@ export default class Arena {
     this.rows = rows;
     this.matrix = this.createMatrix();
     this.colors = colors;
+    this.mergedItemColor = '198,177,199';
   }
 
   createMatrix = () => {
@@ -24,16 +25,18 @@ export default class Arena {
     // Draw arena.
     this.drawMatrix(this.matrix, { x: 0, y: 0 });
     // Draw item.
-    this.drawMatrix(player.matrix, player.pos);
+    this.drawMatrix(player.matrix, player.pos, true);
   };
 
-  drawMatrix = (matrix, offset) => {
+  drawMatrix = (matrix, offset, isPlayerItem = false) => {
     let self = this;
 
     matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          const color = this.colors[value];
+          const color = isPlayerItem
+            ? this.colors[value]
+            : this.mergedItemColor;
           self.context.fillStyle = `rgba(${color}, 0.8)`;
           self.context.fillRect(x + offset.x, y + offset.y, 1, 1);
           let gradient = self.context.createLinearGradient(0, 0, 1, 1);

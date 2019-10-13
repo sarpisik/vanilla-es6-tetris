@@ -5,20 +5,12 @@ import Button from './components/button';
 import playButtonImage from '../assets/images/play-button.png';
 import pauseButtonImage from '../assets/images/pause.png';
 import NextItem from './components/nextItem';
+import { isCollided, merge, rotate, itemColors } from './lib';
 
 export default class Game {
   constructor() {
     // Item colors.
-    this.colors = [
-      null,
-      '255, 13, 114',
-      '13, 194, 255',
-      '13, 255, 114',
-      '245, 56, 255',
-      '255, 142, 13',
-      '255, 225, 56',
-      '56, 119, 255'
-    ];
+    this.colors = itemColors;
 
     // DOM elements
     this.scoreBoard = new Display('#score');
@@ -39,8 +31,6 @@ export default class Game {
     document.addEventListener('keydown', this.handleKeyDown);
 
     // Initialize game
-    this.gameOver = true;
-    this.dashPlayer = false;
     this.initialGameSettings();
     this.updateBoard();
   }
@@ -49,6 +39,8 @@ export default class Game {
     this.player = new Player();
     this.lastTime = 0;
     this.dropCounter = 0;
+    this.gameOver = true;
+    this.dashPlayer = false;
     // Create a new player and draw a random item.
     this.player.reset(this.arena.matrix);
   };
@@ -81,16 +73,18 @@ export default class Game {
   renderGame = () => {
     this.gameOver = false;
     this.gamePause = false;
-    // Initial game speed.
+    // Beginner's level game speed.
     this.dropInterval = 700;
+    // Dash speed on dash event.
     this.dashSpeed = 10;
     // Clear arena.
     this.arena.matrix.forEach(row => row.fill(0));
     // Clear player score.
     this.player.clear();
     this.updateBoard();
-
+    // Draw next item.
     this.nextItemBoard.drawNextItem(this.player.nextMatrix);
+    // Start game.
     this.update();
   };
 
@@ -106,6 +100,8 @@ export default class Game {
     const deltaTime = time - this.lastTime;
     this.dropCounter += deltaTime;
 
+    // If we are in dash mode, make drop speed faster.
+    // Else, stay in current level's speed.
     this.dropSpeed = this.dashPlayer ? this.dashSpeed : this.dropInterval;
 
     this.dropCounter > this.dropSpeed && this.dropPlayer();
@@ -124,11 +120,11 @@ export default class Game {
     this.player.pos.y++;
 
     // If player collided...
-    if (this.isCollided(this.arena.matrix, this.player)) {
+    if (isCollided(this.arena.matrix, this.player)) {
       // Move back player.
       this.player.pos.y--;
       // Merge player's item with arena's items.
-      this.merge(this.arena.matrix, this.player);
+      merge(this.arena.matrix, this.player);
       // Reset player location and item.
       this.resetPlayer();
       // Clear rows on success.
@@ -145,37 +141,12 @@ export default class Game {
     this.dropCounter = 0;
   };
 
-  isCollided = (arena, { pos: playerPosition, matrix: playerMatrix }) => {
-    for (let row = 0; row < playerMatrix.length; ++row) {
-      for (let cell = 0; cell < playerMatrix[row].length; ++cell) {
-        if (
-          playerMatrix[row][cell] !== 0 &&
-          (arena[row + playerPosition.y] &&
-            arena[row + playerPosition.y][cell + playerPosition.x]) !== 0
-        ) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  merge = (arena, { pos: playerPosition, matrix: playerMatrix }) => {
-    playerMatrix.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        if (cell !== 0) {
-          arena[y + playerPosition.y][x + playerPosition.x] = cell;
-        }
-      });
-    });
-  };
-
   resetPlayer = () => {
     // Reset player location and item.
     this.player.reset(this.arena.matrix);
 
     // Game Over
-    this.isCollided(this.arena.matrix, this.player) && this.onGameOver();
+    isCollided(this.arena.matrix, this.player) && this.onGameOver();
   };
 
   onGameOver = () => {
@@ -235,8 +206,7 @@ export default class Game {
     this.player.pos.x += offset;
 
     // If the item collided, cancel move.
-    this.isCollided(this.arena.matrix, this.player) &&
-      (this.player.pos.x -= offset);
+    isCollided(this.arena.matrix, this.player) && (this.player.pos.x -= offset);
   };
 
   playerRotate = dir => {
@@ -245,30 +215,16 @@ export default class Game {
 
     let offset = 1;
 
-    self.rotate(self.player.matrix, dir);
+    rotate(self.player.matrix, dir);
 
     while (self.isCollided(self.arena.matrix, self.player)) {
       self.player.pos.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
       if (offset > self.player.matrix[0].length) {
-        self.rotate(self.player.matrix, -dir);
+        rotate(self.player.matrix, -dir);
         self.player.pos.x = pos;
         return;
       }
-    }
-  };
-
-  rotate = (matrix, dir) => {
-    for (let y = 0; y < matrix.length; ++y) {
-      for (let x = 0; x < y; ++x) {
-        [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
-      }
-    }
-
-    if (dir > 0) {
-      matrix.forEach(row => row.reverse());
-    } else {
-      matrix.reverse();
     }
   };
 
