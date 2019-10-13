@@ -34,11 +34,15 @@ export default class Arena {
     matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
+          // If this is player's item, set colored background.
+          // Else, set merged item color.
           const color = isPlayerItem
             ? this.colors[value]
             : this.mergedItemColor;
+          // Square color.
           self.context.fillStyle = `rgba(${color}, 0.8)`;
           self.context.fillRect(x + offset.x, y + offset.y, 1, 1);
+          // Border color.
           let gradient = self.context.createLinearGradient(0, 0, 1, 1);
           gradient.addColorStop('0', `rgba(${color}, 0.3)`);
           gradient.addColorStop('1.0', `rgba(${color}, 1)`);
