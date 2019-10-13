@@ -217,7 +217,7 @@ export default class Game {
 
     rotate(self.player.matrix, dir);
 
-    while (self.isCollided(self.arena.matrix, self.player)) {
+    while (isCollided(self.arena.matrix, self.player)) {
       self.player.pos.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
       if (offset > self.player.matrix[0].length) {
