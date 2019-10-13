@@ -40,6 +40,7 @@ export default class Game {
 
     // Initialize game
     this.gameOver = true;
+    this.dashPlayer = false;
     this.initialGameSettings();
     this.updateBoard();
   }
@@ -81,7 +82,8 @@ export default class Game {
     this.gameOver = false;
     this.gamePause = false;
     // Initial game speed.
-    this.dropInterval = 1000;
+    this.dropInterval = 700;
+    this.dashSpeed = 10;
     // Clear arena.
     this.arena.matrix.forEach(row => row.fill(0));
     // Clear player score.
@@ -104,7 +106,9 @@ export default class Game {
     const deltaTime = time - this.lastTime;
     this.dropCounter += deltaTime;
 
-    this.dropCounter > this.dropInterval && this.dropPlayer();
+    this.dropSpeed = this.dashPlayer ? this.dashSpeed : this.dropInterval;
+
+    this.dropCounter > this.dropSpeed && this.dropPlayer();
 
     this.lastTime = time;
 
@@ -131,6 +135,8 @@ export default class Game {
       const [rowCount, score] = this.arena.sweep(this.player.score);
       // If any row cleared, update level.
       rowCount > 0 && this.updateLevel(rowCount, score);
+      // If item dashed, switch off dash.
+      this.dashPlayer && this.toggleDashItem();
 
       this.nextItemBoard.drawNextItem(this.player.nextMatrix);
       this.updateBoard();
@@ -187,9 +193,11 @@ export default class Game {
     self.player.clearedRows += rowCount;
     self.player.score += score;
 
-    // Player's level and game's speed up in every 5 rows cleared.
+    // Increase player's level and game's speed on every 5 rows cleared.
     if (self.player.clearedRows >= (self.player.level + 1) * 5) {
+      // Increase level.
       self.player.level++;
+      // Increase game speed.
       self.dropInterval = self.dropInterval / (self.player.level + 1) + 200;
     }
   };
@@ -205,7 +213,7 @@ export default class Game {
     } else if (keyCode === 39) {
       this.playerMove(1);
     } else if (keyCode === 40) {
-      this.dropPlayer();
+      this.toggleDashItem();
     } else if (keyCode === 81) {
       this.playerRotate(-1);
     } else if (keyCode === 87) {
@@ -219,7 +227,7 @@ export default class Game {
     if (this.gamePause) return;
     if (alt === 'left arrow') return this.playerMove(-1);
     if (alt === 'right arrow') return this.playerMove(1);
-    if (alt === 'dash') return this.dropPlayer();
+    if (alt === 'dash') return this.toggleDashItem();
     if (alt === 'rotate') return this.playerRotate(1);
   };
 
@@ -263,4 +271,6 @@ export default class Game {
       matrix.reverse();
     }
   };
+
+  toggleDashItem = () => (this.dashPlayer = !this.dashPlayer);
 }
